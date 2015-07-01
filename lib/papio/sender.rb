@@ -13,6 +13,7 @@ module Papio
 
     def send
       groups.map do |group|
+        # https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template
         self.class.post('/messages/send-template.json', body: ({
           key: Papio.config.api_key,
           template_name: group[0].template,
@@ -25,6 +26,7 @@ module Papio
             merge_vars: group.map{ |mail| {rcpt: mail.to[:mail], vars: mail.merge_vars} }
           }
         }).to_json)
+        # TODO: Do something with the return value
       end
     end
 
@@ -32,6 +34,7 @@ module Papio
       @mails.each do |mail|
         fail 'Not yet implemented'
         # TODO: Render (using mandrill) and open in browser (using launchy)
+        # https://mandrillapp.com/api/docs/templates.JSON.html#method=render
       end
     end
 
