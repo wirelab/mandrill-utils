@@ -6,7 +6,7 @@ module Papio
   class Sender
     include HTTParty
     base_uri 'https://mandrillapp.com/api/1.0/'
-    debug_output $stderr
+    #debug_output $stderr
     format :json
 
     # @param mails [Array] the mails to deliver.
@@ -52,7 +52,7 @@ module Papio
         }
 
         result = self.class.post('/templates/render.json', body: body.to_json)
-        # Test if result is not an error
+        # TODO: Test if result is not an error
         filename = File.join(Papio.config.temp_directory, "#{SecureRandom.hex(16)}.html")
         File.write filename, result['html']
         Launchy.open filename

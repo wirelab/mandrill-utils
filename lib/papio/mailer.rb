@@ -20,9 +20,9 @@ module Papio
     end
 
     def mail(to:, vars:{}, from:self.class.default[:from],
-             subject:self.class.default[:subject],
-             template:self.class.default.fetch(:template),
-             merge_language:self.class.default[:merge_language])
+            subject:self.class.default[:subject],
+            template:self.class.default.fetch(:template),
+            merge_language:self.class.default[:merge_language])
       Mail.new(to: to, vars:vars, from:from, subject:subject, template:template,merge_language:merge_language)
     end
   end
