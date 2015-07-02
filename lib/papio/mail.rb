@@ -5,7 +5,11 @@ module Papio
     # subaccount
 
     # To, From, Reply_to must be a string (tim@wirelab.nl), or a hash ({email: 'tim@wirelab.nl', name: 'Tim'})
-    def initialize(to:, template:, merge_language:'mailchimp', from:nil, vars:{}, subject:nil, reply_to:nil)
+    def initialize(to:, template:, merge_language:'mailchimp',
+                   from:nil, vars:{}, subject:nil, reply_to:nil,
+                   sender:Sender, queue:Papio.queue)
+      @queue = queue
+      @sender = sender
       self.to = to
       self.from = from
       self.template = template
@@ -29,7 +33,7 @@ module Papio
     end
 
     def group
-      [mail.template, mail.merge_language, mail.reply_to, mail.from]
+      [template, merge_language, reply_to, from]
     end
 
     def to=(value)
@@ -46,23 +50,23 @@ module Papio
 
     # Send the mail.
     def send
-      Sender.new(self).send
+      @sender.new(self).send
     end
 
     # Queue the mail.
     def queue
-      Papio.queue.add self
+      @queue.add self
     end
 
     # Render this mail to html.
     # This will not send an email.
     def render
-      Sender.new(self).render
+      @sender.new(self).render
     end
 
     # Render and open in a browser or send the email based on development state.
     def deliver
-      Sender.new(self).deliver
+      @sender.new(self).deliver
     end
 
     private

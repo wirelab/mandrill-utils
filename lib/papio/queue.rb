@@ -1,6 +1,7 @@
 module Papio
   class Queue
-    def initialize
+    def initialize sender:Sender
+      @sender = sender
       @queue = []
     end
 
@@ -21,19 +22,19 @@ module Papio
     end
 
     def send
-      result = Sender.new(@queue).send
+      result = @sender.new(@queue).send
       clear
       result
     end
 
     def render
-      result = Sender.new(@queue).render
+      result = @sender.new(@queue).render
       clear
       result
     end
 
     def deliver
-      result = Sender.new(@queue).deliver
+      result = @sender.new(@queue).deliver
       clear
       result
     end

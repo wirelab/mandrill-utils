@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 module Papio
   class Config
     attr_accessor :api_key
