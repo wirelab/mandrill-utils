@@ -36,7 +36,8 @@ class Mailer < Papio::Mailer
   default from: 'info@example.com', reply_to: 'reply@example.com'
 
   def some_mail
-    mail to: 'test@example.org', template: 'test-template', vars: {title: 'title'}
+    @title = 'title'
+    mail to: 'test@example.org', template: 'test-template'
   end
 end
 ```
