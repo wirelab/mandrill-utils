@@ -3,6 +3,7 @@ require "papio/config"
 require "papio/sender"
 require "papio/mail"
 require "papio/mailer"
+require "papio/email_sanitizer"
 
 module Papio
   def self.configure

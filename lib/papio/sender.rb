@@ -1,3 +1,5 @@
+require 'securerandom'
+require 'launchy'
 require 'httparty'
 
 module Papio
@@ -14,27 +16,43 @@ module Papio
     def send
       groups.map do |group|
         # https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template
-        self.class.post('/messages/send-template.json', body: ({
+        body = {
           key: Papio.config.api_key,
           template_name: group[0].template,
           template_content: [],
           message: {
-            to: group.map{ |mail| mail.to },
+            to: group.map(&:to),
+            headers: {
+            },
             inline_css: true,
             preserve_recipients: false,
             merge_language: group[0].merge_language,
-            merge_vars: group.map{ |mail| {rcpt: mail.to[:mail], vars: mail.merge_vars} }
+            merge_vars: group.map(&:rcpt_merge_vars)
           }
-        }).to_json)
+        }
+
+        body[:message][:headers]['Reply-To'] = EmailSanitizer.sanitize group[0].reply_to if group[0].reply_to
+
+        self.class.post('/messages/send-template.json', body: body.to_json)
         # TODO: Do something with the return value
       end
     end
 
     def render
       @mails.each do |mail|
-        fail 'Not yet implemented'
-        # TODO: Render (using mandrill) and open in browser (using launchy)
         # https://mandrillapp.com/api/docs/templates.JSON.html#method=render
+        body = {
+          key: Papio.config.api_key,
+          template_name: mail.template,
+          template_content: [],
+          merge_vars: mail.merge_vars
+        }
+
+        result = self.class.post('/templates/render.json', body: body.to_json)
+        # Test if result is not an error
+        filename = File.join(Papio.config.temp_directory, "#{SecureRandom.hex(16)}.html")
+        File.write filename, result['html']
+        Launchy.open filename
       end
     end
 
@@ -49,7 +67,7 @@ module Papio
     private
 
     def groups
-      @mails.group_by{|mail| [mail.template,mail.merge_language]}.values
+      @mails.group_by(&:group).values
     end
   end
 end
