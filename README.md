@@ -3,6 +3,24 @@
 This gem provider a full mandrill based email system. It allows sending emails in bulk using mandrills' RESTfull API.
 It is designed to feel like ActionMailer, however there are various notable differences.
 
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'papio'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install papio
+
+## Usage
+
 You need to set the api_key and other config options.
 ```ruby
 Papio.configure do |config|
@@ -36,26 +54,6 @@ Mailer.some_mail.queue
 Papio.queue.deliver
 ```
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'papio'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install papio
-
-## Usage
-
-TODO: Write usage instructions here
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -64,4 +62,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/papio. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/wirelab/mandrill-utils.
