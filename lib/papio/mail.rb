@@ -49,6 +49,11 @@ module Papio
       Sender.new(self).send
     end
 
+    # Queue the mail.
+    def queue
+      Papio.queue.add self
+    end
+
     # Render this mail to html.
     # This will not send an email.
     def render

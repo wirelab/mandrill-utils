@@ -4,15 +4,20 @@ require "papio/sender"
 require "papio/mail"
 require "papio/mailer"
 require "papio/email_sanitizer"
+require "papio/queue"
 
 module Papio
   def self.configure
-    @config ||= Config.new
     yield config if block_given?
-    @config
+    config
   end
 
   def self.config
-    @config || configure
+    @config ||= Config.new
+  end
+
+  # The mail queue. This is thread local to prevent threading issues.
+  def self.queue
+    Thread.current['papio_queue'] ||= Papio::Queue.new
   end
 end
