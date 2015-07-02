@@ -9,10 +9,12 @@ module Papio
     debug_output $stderr
     format :json
 
+    # @param mails [Array] the mails to deliver.
     def initialize(mails=[])
       @mails = Array(mails)
     end
 
+    # Send to all mails specified in the constructor.
     def send
       groups.map do |group|
         # https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template
@@ -38,6 +40,7 @@ module Papio
       end
     end
 
+    # Render all mails to files and open in the browser.
     def render
       @mails.each do |mail|
         # https://mandrillapp.com/api/docs/templates.JSON.html#method=render
@@ -56,6 +59,7 @@ module Papio
       end
     end
 
+    # Deliver all mails. This either sends or renders all emails depending on development state.
     def deliver
       if Papio.config.development
         render

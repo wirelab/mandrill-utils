@@ -5,6 +5,9 @@ module Papio
     # subaccount
 
     # To, From, Reply_to must be a string (tim@wirelab.nl), or a hash ({email: 'tim@wirelab.nl', name: 'Tim'})
+    # @param sender [Sender] the sender to use
+    # @param queue [Queue] the queue to use
+    # @param vars [Hash] the merge vars for this email.
     def initialize(to:, template:, merge_language:'mailchimp',
                    from:nil, vars:{}, subject:nil, reply_to:nil,
                    sender:Sender, queue:Papio.queue)
@@ -19,12 +22,14 @@ module Papio
       self.reply_to = reply_to
     end
 
+    # @return [Array] the merge vars in mandrill format.
     def merge_vars
       @vars.map do |k,v|
         {name: k, content: v}
       end
     end
 
+    # @return [Hash] the merge vars for the recipient in mandrill format.
     def rcpt_merge_vars
       {
         rcpt: to[:email],
@@ -32,6 +37,7 @@ module Papio
       }
     end
 
+    # @return [Array] the attributes to group by.
     def group
       [template, merge_language, reply_to, from]
     end
