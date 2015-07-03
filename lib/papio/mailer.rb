@@ -19,7 +19,7 @@ module Papio
       end
     end
 
-    # @param [Hash] the merge vars to be used. If you leave this empty, it will use the instance_variables like ActionMailer does.
+    # @param vars [Hash] the merge vars to be used. If you leave this empty, it will use the instance_variables like ActionMailer does.
     # @return [Mail] returns the mail to be sent.
     def mail(to:, vars:merge_vars, from:self.class.default[:from],
             subject:self.class.default[:subject],

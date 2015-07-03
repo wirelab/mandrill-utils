@@ -15,8 +15,9 @@ module Papio
     end
 
     # Send to all mails specified in the constructor.
+    # @return [Hash] with the status as the key and the messages with that status as a value array. possible statusses are: sent, invalid, rejected, queued.
     def send
-      groups.map do |group|
+      responses = groups.map do |group|
         # https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template
         body = {
           key: Papio.config.api_key,
@@ -35,9 +36,11 @@ module Papio
 
         body[:message][:headers]['Reply-To'] = EmailSanitizer.sanitize group[0].reply_to if group[0].reply_to
 
-        self.class.post('/messages/send-template.json', body: body.to_json)
+        response = self.class.post('/messages/send-template.json', body: body.to_json)
+        response.parsed_response
         # TODO: Do something with the return value
-      end
+      end.flatten
+      responses.group_by { |r| r['status'].to_sym }
     end
 
     # Render all mails to files and open in the browser.
