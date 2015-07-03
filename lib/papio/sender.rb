@@ -4,6 +4,9 @@ require 'httparty'
 
 module Papio
   class Sender
+    class Error < StandardError
+    end
+
     include HTTParty
     base_uri 'https://mandrillapp.com/api/1.0/'
     #debug_output $stderr
@@ -37,6 +40,7 @@ module Papio
         body[:message][:headers]['Reply-To'] = EmailSanitizer.sanitize group[0].reply_to if group[0].reply_to
 
         response = self.class.post('/messages/send-template.json', body: body.to_json)
+        raise Error, response.parsed_response['message'] if response.code != 200
         response.parsed_response
         # TODO: Do something with the return value
       end.flatten
@@ -55,7 +59,7 @@ module Papio
         }
 
         result = self.class.post('/templates/render.json', body: body.to_json)
-        # TODO: Test if result is not an error
+        raise Error, result.parsed_response['message'] if response.code != 200
         filename = File.join(Papio.config.temp_directory, "#{SecureRandom.hex(16)}.html")
         File.write filename, result['html']
         Launchy.open filename
