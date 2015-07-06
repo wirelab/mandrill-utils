@@ -10,7 +10,7 @@ module Papio
     # @param tags [Array] tags to add to the email
     # @param vars [Hash] the merge vars for this email.
     def initialize(to:, template:, merge_language:'mailchimp',
-                   from:nil, vars:{}, subject:nil, reply_to:nil, tags:[]
+                   from:nil, vars:{}, subject:nil, reply_to:nil, tags:[],
                    sender:Sender, queue:Papio.queue)
       @queue = queue
       @sender = sender

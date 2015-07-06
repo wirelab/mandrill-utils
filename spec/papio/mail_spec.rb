@@ -33,7 +33,7 @@ module Papio
     describe '.group' do
       it 'returns a array of things to group by' do
         group = Mail.new(to: 'test@example.com', template: 'test-template', from: 'from', reply_to: 'reply_to').group
-        expect(group).to eq ["test-template", "mailchimp", {:email=>'reply_to'}, {:email=>'from'}]
+        expect(group).to eq ["test-template", "mailchimp", {:email=>'reply_to'}, {:email=>'from'}, []]
       end
     end
 

@@ -30,7 +30,7 @@ module Papio
             to: group.map(&:to),
             headers: {
             },
-            tags: group[0].tags
+            tags: group[0].tags,
             inline_css: true,
             preserve_recipients: false,
             merge_language: group[0].merge_language,
