@@ -1,15 +1,16 @@
 module Papio
   class Mail
     attr_reader :to, :from, :reply_to
-    attr_accessor :subject, :template, :merge_language, :vars
+    attr_accessor :subject, :template, :merge_language, :vars, :tags
     # subaccount
 
     # To, From, Reply_to must be a string (tim@wirelab.nl), or a hash ({email: 'tim@wirelab.nl', name: 'Tim'})
     # @param sender [Sender] the sender to use
     # @param queue [Queue] the queue to use
+    # @param tags [Array] tags to add to the email
     # @param vars [Hash] the merge vars for this email.
     def initialize(to:, template:, merge_language:'mailchimp',
-                   from:nil, vars:{}, subject:nil, reply_to:nil,
+                   from:nil, vars:{}, subject:nil, reply_to:nil, tags:[]
                    sender:Sender, queue:Papio.queue)
       @queue = queue
       @sender = sender
@@ -20,6 +21,7 @@ module Papio
       self.vars = vars
       self.subject = subject
       self.reply_to = reply_to
+      self.tags = tags
     end
 
     # @return [Array] the merge vars in mandrill format.
@@ -39,7 +41,7 @@ module Papio
 
     # @return [Array] the attributes to group by.
     def group
-      [template, merge_language, reply_to, from]
+      [template, merge_language, reply_to, from, tags]
     end
 
     def to=(value)
