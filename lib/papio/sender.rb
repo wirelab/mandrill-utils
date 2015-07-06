@@ -60,7 +60,7 @@ module Papio
         }
 
         result = self.class.post('/templates/render.json', body: body.to_json)
-        raise Error, result.parsed_response['message'] if response.code != 200
+        raise Error, result.parsed_response['message'] if result.code != 200
         filename = File.join(Papio.config.temp_directory, "#{SecureRandom.hex(16)}.html")
         File.write filename, result['html']
         Launchy.open filename
