@@ -55,6 +55,9 @@ Mailer.some_mail.queue
 Papio.queue.deliver
 ```
 
+If you have Rails loaded you can use rails path helpers in your `Mailer` class.
+You can set `default_url_options` in `Papio::Config`.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
