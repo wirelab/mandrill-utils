@@ -19,5 +19,11 @@ module Papio
         expect(Config.new.temp_directory).to eq Dir.tmpdir
       end
     end
+
+    describe '.default_url_options' do
+      it 'defaults to {}' do
+        expect(Config.new.default_url_options).to eq({})
+      end
+    end
   end
 end

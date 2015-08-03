@@ -9,10 +9,14 @@ module Papio
     attr_accessor :development
     # The directory to store temporary files in for development mode.
     attr_accessor :temp_directory
+    # Default URL options or rails paths.
+    # This probably should be a hash with a `host` key.
+    attr_accessor :default_url_options
 
     def initialize
       @development = false
       @temp_directory = Dir.tmpdir
+      @default_url_options = {}
     end
   end
 end

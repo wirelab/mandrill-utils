@@ -1,6 +1,12 @@
 module Papio
   class Mailer
+    include Rails.application.routes.url_helpers if defined? Rails
+
     class << self
+      def default_url_options
+        Papio.config.default_url_options
+      end
+
       def respond_to?(method)
         public_instance_methods(false).include?(method) || super
       end
@@ -31,7 +37,8 @@ module Papio
     private
 
     def merge_vars
-      instance_variables.reduce({}) do |hash, sym|
+      vars = instance_variables - [:@_routes]
+      vars.reduce({}) do |hash, sym|
         hash[sym.to_s[1..-1].to_sym] = instance_variable_get(sym)
         hash
       end

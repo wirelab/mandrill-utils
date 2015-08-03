@@ -16,5 +16,24 @@ module Papio
       expect(mail.vars).to eq({title: 'Hello, World!'})
       expect(mail.subject).to eq "The Subject"
     end
+
+    describe 'path helpers' do
+      Papio.configure do |config|
+        config.default_url_options = { host: 'test.dev' }
+      end
+
+      class DummyMailer < Mailer
+        default subject: 'The Subject'
+        def an_email
+          @title = dummies_url
+          mail to: 'test@example.com', template: 'test-template'
+        end
+      end
+
+      it 'has path helpers' do
+        expect(DummyMailer.an_email.vars[:title]).to eq 'http://test.dev/dummies'
+      end
+
+    end
   end
 end
